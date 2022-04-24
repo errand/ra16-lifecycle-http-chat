@@ -1,20 +1,32 @@
 import {useState, useEffect} from "react";
 import Form from "./Form";
 import ChatList from "./ChatList";
+import { nanoid } from "nanoid"
 
 export default function Chat() {
 
   const [messages, setMessages] = useState([])
+  const [user, setUser] = useState('')
   const [hasError, setHasError] = useState(false)
   const [loading, setLoading] = useState(false)
+  const id = nanoid()
+  const localStore = window.localStorage
+  const storage = localStore.getItem('user');
+  let currentUser = storage ? JSON.parse(storage) : ''
 
   useEffect(() => {
+    if(!currentUser) {
+      currentUser = id
+      localStorage.setItem('user', JSON.stringify(currentUser))
+      setUser(id)
+    }
+    setUser(currentUser)
     handleReload()
   }, [])
 
   const handleReload = () => {
     setLoading(true)
-    fetch(process.env.REACT_APP_NOTES_URL)
+    fetch(process.env.REACT_APP_MESSAGES_URL)
       .then(response => response.json())
       .then(result => {
         setLoading(false)
@@ -25,12 +37,13 @@ export default function Chat() {
     })
   };
 
-  const handleAdd = note => {
+  const handleAdd = (user, text) => {
     setLoading(true)
-    fetch(process.env.REACT_APP_NOTES_URL, {
+    const data = {user, text}
+    fetch(process.env.REACT_APP_MESSAGES_URL, {
       method: 'POST',
       credentials: 'same-origin',
-      body: note
+      body: JSON.stringify(data)
       })
       .then(response => response.json())
       .then(result => {
@@ -46,7 +59,7 @@ export default function Chat() {
 
   const handleDelete = id => {
     setLoading(true)
-    fetch(process.env.REACT_APP_NOTES_URL+`/${id}`, {
+    fetch(process.env.REACT_APP_MESSAGES_URL+`/${id}`, {
       method: 'DELETE',
       credentials: 'same-origin',
       body: id
@@ -64,9 +77,15 @@ export default function Chat() {
   return (
     <div className="wrapper" data-testid="test">
       <div className="wrapper--inner">
-        <header><h1>Notes</h1><button type="button" onClick={handleReload}><span className="material-symbols-outlined">sync</span></button></header>
-        { loading ? <div className="loading"><span className="material-symbols-outlined">hourglass_empty</span></div> : hasError ? <div className="error">Error!</div> : <ChatList list={messages} onDelete={handleDelete} /> }
-        <Form onAdd={handleAdd} />
+        <h1>Chat</h1>
+        { loading ?
+          <div className="loading">
+            <span className="material-symbols-outlined">hourglass_empty</span>
+          </div>
+          : hasError ?
+            <div className="error">Error!</div> :
+            <ChatList list={messages} user={user} onDelete={handleDelete} /> }
+        <Form user={user} onAdd={handleAdd} />
       </div>
     </div>
   );

@@ -55,10 +55,8 @@ body {
 }
 
 .notes {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 1rem;
-    grid-row-gap: 1rem;
+    display: flex;
+    flex-direction: column;
     margin-bottom: 1rem;
 }
 
@@ -67,6 +65,11 @@ body {
     background-color: #fcfcfc;
     border: 1px solid lightgray;
     position: relative;
+    align-self: flex-start;
+    margin-bottom: 1rem;
+}
+.author {
+    align-self: flex-end;
 }
 .delete {
     position: absolute;

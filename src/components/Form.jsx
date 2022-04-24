@@ -1,7 +1,7 @@
 import {useState} from "react";
 import PropTypes from "prop-types";
 
-export default function Form({onAdd}) {
+export default function Form({user, onAdd}) {
 
   const [form, setForm] = useState({
     text: ''
@@ -13,7 +13,7 @@ export default function Form({onAdd}) {
 
   const handleSubmit = evt => {
     evt.preventDefault()
-    onAdd(form.text)
+    onAdd(user, form.text)
     setForm({
       text: ''
     })
@@ -23,7 +23,7 @@ export default function Form({onAdd}) {
     <form onSubmit={handleSubmit}>
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="text">Название</label>
+          <label htmlFor="text">Текст</label>
           <textarea id="text" name="text" value={form.text} onChange={handleText} ></textarea>
         </div>
         <div className="form-group">

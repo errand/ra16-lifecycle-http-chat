@@ -1,11 +1,14 @@
 import PropTypes from 'prop-types'
 
-export default function Note({item, onDelete: handleDelete}) {
+export default function Note({item, author, onDelete: handleDelete}) {
+
+  const authorClass = author ? 'author note' : 'note'
+
   return (
-    <div className="note">
+    <div className={authorClass}>
       <div className="text">{item.text}</div>
       <button className="delete" onClick={() => handleDelete(item.id)}>
-        <span className="material-symbols-outlined">cancel</span>
+        {author ? <span className="material-symbols-outlined">cancel</span> : ''}
       </button>
     </div>
   )
