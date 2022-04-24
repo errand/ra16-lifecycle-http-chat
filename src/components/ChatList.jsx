@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import Note from "./Note";
 
 export default function ChatList({list, user, onDelete: handleDelete}) {
-  console.log(list)
   const listItems = list.map(item => <Note key={item.id} author={user === item.uid ? true : false} item={item} onDelete={handleDelete}/>)
 
   return(

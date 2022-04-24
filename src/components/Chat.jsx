@@ -6,21 +6,17 @@ import { nanoid } from "nanoid"
 export default function Chat() {
 
   const [messages, setMessages] = useState([])
-  const [user, setUser] = useState('')
   const [hasError, setHasError] = useState(false)
   const [loading, setLoading] = useState(false)
   const id = nanoid()
   const localStore = window.localStorage
   const storage = localStore.getItem('user');
-  let currentUser = storage ? JSON.parse(storage) : ''
+  let currentUser = storage ? JSON.parse(storage) : id
+  if(!currentUser) {
+    localStorage.setItem('user', JSON.stringify(currentUser))
+  }
 
   useEffect(() => {
-    if(!currentUser) {
-      currentUser = id
-      localStorage.setItem('user', JSON.stringify(currentUser))
-      setUser(id)
-    }
-    setUser(currentUser)
     handleReload()
   }, [])
 
@@ -84,8 +80,8 @@ export default function Chat() {
           </div>
           : hasError ?
             <div className="error">Error!</div> :
-            <ChatList list={messages} user={user} onDelete={handleDelete} /> }
-        <Form user={user} onAdd={handleAdd} />
+            <ChatList list={messages} user={currentUser} onDelete={handleDelete} /> }
+        <Form user={currentUser} onAdd={handleAdd} />
       </div>
     </div>
   );
