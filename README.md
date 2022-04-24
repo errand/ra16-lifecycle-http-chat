@@ -1,4 +1,5 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/rvjpjva5pyn6le83?svg=true)](https://ci.appveyor.com/project/errand/ra16-lifecycle-http-crud)
+[![Build status](https://ci.appveyor.com/api/projects/status/u6usnly9ctlbpcyt?svg=true)](https://ci.appveyor.com/project/errand/ra16-lifecycle-http-chat)
+
 
 
 [GH-Pages](https://errand.github.io/ra16-lifecycle-http-chat/)
